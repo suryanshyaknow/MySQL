@@ -1,2 +1,2 @@
 # MySQL
-Nothing but gaining expertize on MySQL!
+Nothing much just tryna gain somewhat expertize in MySQL!
