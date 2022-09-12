@@ -57,7 +57,7 @@ alter table magic_squads drop foreign key fk_magic_squads;
 select *  from magic_squads; 
 # after dropping the key and adding the records, now we'll again add the foreign key
 alter table magic_squads
-add foreign key(id) references magic_knights(id); # Error Code: 1452, basically gotta drop Yuno's row
+add foreign key(id) references magic_knights(id); # Error Code: 1452, basically gotta drop Yuno's row cuz he wasn't in the magiv_knights
 
 SET SQL_SAFE_UPDATES = 0;
 delete from magic_squads where squad = 'Golden Dawn';
@@ -100,7 +100,7 @@ select * from magic_knights;
 alter table magic_knights add constraint chk_magic_knights check(id<10);
 #__> check constraint can't refer to an auto-increement column.
 
-### DEFAULT CONSTRAINT
+### --------------------------- DEFAULT CONSTRAINT -----------------------------------------------
 alter table magic_knights modify column ranking varchar(30) default 'None';
 desc magic_knights;
 select * from magic_knights;

@@ -8,13 +8,13 @@ Note: Kinda Disadvantage: Updating the table with index will take more time than
 --> It's because the indexes will also need an update.
 Thus it's better to create indexes on those columns that will be frequently searched against.
 
-Layman's example: A book having index table and with the help of that indexe table, we getting to the page we want.
+Layman's example: A book having index table and with the help of that index table, we getting to the page we want.
 If we don't use indexes then probably we'll take forever to reach to the desired page. 
 
 Clearer Picture: When you're adding an index you are just telling the database that that a certain column is important for you.
 __> The time efficiency that we get from using indexes will be visible to the naked eye,
 when we have large datasets say, millions of records.
-___> MySQL will literally take the data of the index made and loacte it to some other separate location.
+___> MySQL will literally copy the data of the index made and locate it to some other separate location.
 */
 use rev;
 show tables;
@@ -27,9 +27,11 @@ create index index_absolute_name on pirates(Name, LastName);
 desc pirates;
 
 # Using the Index
-# Ain't no particular way, just use the queries as usual and the result will be demonstrated in time taken.
+# Ain't no particular way, just use the queries as usual and the result will be demonstrated by the time taken to execute that query.
 select Name, LastName from pirates where name="Luffy";
 
 # Showing the Indexes
 SHOW INDEX FROM pirates;
+
+# BTree index --> performs binary search while searching for some ceratin item.
  

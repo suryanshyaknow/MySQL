@@ -16,7 +16,8 @@ the action will be aborted.
 7. Index
 */
  use rev;
- 
+
+drop table pirates;
  create table pirates(
  Name varchar(30) not null,
  MiddleName varchar(30),
@@ -43,7 +44,7 @@ insert into pirates values
 ('Sanji', null, 'Vinsmoke', null, 'Mugiwara no Ichimei', 3, 'Kuro no Ashi'),
 ('Luffy', 'D.', 'Saru', 'Gomu-Gomu no mi', 'Mugiwara Ichimei', 1, '5th Emperor');
 
-/* Note: Any new entry having Name='Luffy' and LastName='Monkey' simulataneously will violate the constraint,
+/* Note: Any new entry having Name='Luffy' and LastName='Monkey' altogether will violate the constraint,
 and it won't be allowed any entry into the pirates,
 */
 select * from pirates;
@@ -73,10 +74,12 @@ add constraint uc_pirates1 unique(Name, LastName, DevilFruit);
 
 alter table pirates
 add constraint uc_pirates3 unique(RankWithinCrew, recognition); # already vioalating, thats why not allowed
+select * from pirates;
 
 # Trying to remove that duplicate constraint and see whether it's able to remove duplicate only or the both..
 DESC pirates;
-alter table pirates drop INDEX uc_pirates;
+alter table pirates drop INDEX uc_pirates; 
+# alter table pirates drop primary key uc_pirates; ---> won't work!
 DESC pirates;
 insert into pirates values
 ('Teach', 'ASSHOLE', 'Marshall', 'YamiYami nomi', 'Blackbeard Pirates', '1', 'Emperor');
@@ -84,6 +87,7 @@ insert into pirates values
 
 ------------------------------------- PRIMARY KEY ---------------------------------------------------------------------------
  
+ drop table kaizoku;
  create table if not exists Kaizoku(
  Name varchar(30),
  MiddleName varchar(30),
@@ -99,7 +103,7 @@ insert into pirates values
  
  DESC Kaizoku;
  alter table Kaizoku
- # drop index pk_kaizoku; # Not gonna work, probably because a table can only have single primary key
+ # drop index pk_kaizoku; --> Not gonna work, probably because a table can only have single primary key
  drop primary key;
  DESC Kaizoku;
  # Woah! one AMAZING finding here: After dropping the pk, vals that were pk priorly are still not allowed to have null vals.
@@ -123,7 +127,7 @@ insert into pirates values
  
 # --> 2. Column 'DevilFruit' cannot be null.
 alter table Kaizoku modify DevilFruit varchar(30) null;
-# --> All parts of a PRIMARY KEY must not be NULL in a key.
+# --> All parts of a PRIMARY KEY cannot and must not be NULL in any way.
 
 
 
