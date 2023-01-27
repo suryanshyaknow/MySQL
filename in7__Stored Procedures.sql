@@ -88,7 +88,18 @@ call get_tot_mana_atts(@manas, 'peasant');
 select @manas as manas_in_peasants;
 
 call get_tot_mana_atts(@manas, 'Foriegner');
-select @manas as manas_in_foreigners;
+SELECT @manas AS manas_in_foreigners;
 
+############################# STORED PROCEDURES vs FUNCTIONS ##################################
+# Both stored procedures and functions are database objects which contain a set of SQL statements to complete a task. 
+-- ..In many ways, both are different from each other.
 
+# Stored Procedures: Stored Procedures are pre-compiled objects which are compiled for the first time and its compiled format is saved,
+-- ..which executes (compiled code) whenever it is called.
 
+# Functions: A function is compiled and executed every time whenever it is called. A function must return a value and cannot modify the 
+-- ..data received as parameters.
+
+-- i. In a function, it is mandatory to use the RETURNS and RETURN arguments, whereas in a stored procedure is not necessary. 
+-- ii. In few words, a stored procedure is more flexible to write any code that you want, while functions have a rigid structure 
+-- ..and functionality.
