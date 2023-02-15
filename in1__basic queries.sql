@@ -48,40 +48,55 @@ SET SQL_SAFE_UPDATES = 0;
 select * from magic_knights;
 
 ############################ DELETE Statement ################################
-delete from magic_knights where ranking is null;
+DELETE FROM magic_knights where ranking is null;
 select * from magic_knights;
 
 ############################ ALTER Statement #################################
-alter table magic_knights add status varchar(30);  # Add a column named "status" into "magic_knights"
-alter table magic_knights add birth_year date;  # Add a "birth_year" column of `date` dtype into "magic_knights"
-alter table magic_knights modify column birth_year year;  # Change the dtype of "birth_year" column from `date` to `year`
+ALTER table magic_knights ADD status varchar(30);  # Add a column named "status" into "magic_knights"
+ALTER table magic_knights ADD birth_year date;  # Add a "birth_year" column of `date` dtype into "magic_knights"
+ALTER table magic_knights MODIFY column birth_year year;  # Change the dtype of "birth_year" column from `date` to `year`
 
 -- alter table magic_knights drop column birth_year;  # To delete a column using ALTER statement
-alter table magic_knights rename column knight_name to knights;  # To rename a column using ALTER statement
+ALTER table magic_knights RENAME column knight_name to knights;  # To rename a column using ALTER statement
 
-alter table magic_knights rename magic_freshmen;  # To reanme a table itself using ALTER statement
+ALTER table magic_knights RENAME magic_freshmen;  # To reanme a table itself using ALTER statement
 select * from magic_freshmen;
-alter table magic_freshmen rename magic_knights;
+ALTER table magic_freshmen RENAME magic_knights;
 
 select * from magic_knights;
 DESC magic_knights;  # To get a brief description of a table
 
 ###################### Insert records into the newly created columns #############################
 # Into "status" column
-update magic_knights set status = 'Royal' where id=1;
-update magic_knights set status = 'Foriegner' where id=2;
-update magic_knights set status = 'Royal' where id=3;
-update magic_knights set status = 'Royal' where id=4;
-update magic_knights set status = 'Peasant' where id=5;
+UPDATE magic_knights SET status = 'Royal' where id=1;
+UPDATE magic_knights SET status = 'Foriegner' where id=2;
+UPDATE magic_knights SET status = 'Royal' where id=3;
+UPDATE magic_knights SET status = 'Royal' where id=4;
+UPDATE magic_knights SET status = 'Peasant' where id=5;
 
 # Into "birth_year" column
-update magic_knights set birth_year = '1976' where id=1;
-update magic_knights set birth_year = '1990' where id=2;
-update magic_knights set birth_year = '1991' where id=3;
-update magic_knights set birth_year = '1986' where id=4;
-update magic_knights set birth_year = '2004' where id=5;
+UPDATE magic_knights SET birth_year = '1976' where id=1;
+UPDATE magic_knights SET birth_year = '1990' where id=2;
+UPDATE magic_knights SET birth_year = '1991' where id=3;
+UPDATE magic_knights SET birth_year = '1986' where id=4;
+UPDATE magic_knights SET birth_year = '2004' where id=5;
 
 select * from magic_knights;
+
+######################## Create "Temporary" Table ############################
+# But WHY?
+-- They are faster than creating the real tables.
+-- They allow us to simplify complex queries using subsets and joins.
+-- They'll be deleted when current session is terminated.
+
+show tables;
+select * from magic_knights; 
+create TEMPORARY table Captains as
+(
+select * from magic_knights where ranking="Captain"
+);
+select * from Captains;
+
 
 
 
