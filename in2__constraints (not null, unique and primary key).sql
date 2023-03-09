@@ -123,4 +123,4 @@ select * from kaizoku;
  
 -- 2. Column 'DevilFruit' cannot be null.
 alter table Kaizoku modify DevilFruit varchar(30) null;
--- All parts of a PRIMARY KEY cannot and must not be NULL in any way.
+-- None of the entries of a PRIMARY KEY field cannot and must not be NULL in any manner.
