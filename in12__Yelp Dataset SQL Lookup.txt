@@ -1,0 +1,474 @@
+Data Scientist Role Play: Profiling and Analyzing the Yelp Dataset Coursera Worksheet
+
+This is a 2-part assignment. In the first part, you are asked a series of questions that will help you profile and understand the data just like a data scientist would. For this first part of the assignment, you will be assessed both on the correctness of your findings, as well as the code you used to arrive at your answer. You will be graded on how easy your code is to read, so remember to use proper formatting and comments where necessary.
+
+In the second part of the assignment, you are asked to come up with your own inferences and analysis of the data for a particular research question you want to answer. You will be required to prepare the dataset for the analysis you choose to do. As with the first part, you will be graded, in part, on how easy your code is to read, so use proper formatting and comments to illustrate and communicate your intent as required.
+
+For both parts of this assignment, use this "worksheet." It provides all the questions you are being asked, and your job will be to transfer your answers and SQL coding where indicated into this worksheet so that your peers can review your work. You should be able to use any Text Editor (Windows Notepad, Apple TextEdit, Notepad ++, Sublime Text, etc.) to copy and paste your answers. If you are going to use Word or some other page layout application, just be careful to make sure your answers and code are lined appropriately.
+In this case, you may want to save as a PDF to ensure your formatting remains intact for you reviewer.
+
+
+
+Part 1: Yelp Dataset Profiling and Understanding
+
+1. Profile the data by finding the total number of records for each of the tables below:
+	
+i. Attribute table = 10000 
+ii. Business table = 10000 
+iii. Category table = 10000 
+iv. Checkin table = 10000 
+v. elite_years table = 10000
+vi. friend table = 10000
+vii. hours table = 10000
+viii. photo table = 10000
+ix. review table = 10000
+x. tip table = 10000
+xi. user table = 10000
+	
+
+
+2. Find the total distinct records by either the foreign key or primary key for each table. If two foreign keys are listed in the table, please specify which foreign key.
+
+i. Business = 10000
+ii. Hours = 10000
+iii. Category = 10000
+iv. Attribute = 10000
+v. Review = 10000 (fk: business_id)
+vi. Checkin = 10000
+vii. Photo = 10000 (pk: id)
+viii. Tip = 10000 (fk: user_id)
+ix. User = 10000
+x. Friend = 10000
+xi. Elite_years = 10000
+
+Note: Primary Keys are denoted in the ER-Diagram with a yellow key icon.	
+
+
+
+3. Are there any columns with null values in the Users table? Indicate "yes," or "no."
+
+	Answer: no
+	
+	
+	SQL code used to arrive at answer: 
+	SELECT COUNT(*)
+	FROM User
+	WHERE id IS NULL 
+		OR name IS NULL 
+		OR review_count IS NULL 
+		OR yelping_since IS NULL 
+		OR useful IS NULL 
+		OR funny IS NULL 
+		OR cool IS NULL 
+		OR fans IS NULL 
+		OR average_stars IS NULL 
+		OR compliment_hot IS NULL 
+		OR compliment_more IS NULL 
+		OR compliment_profile IS NULL 
+		OR compliment_cute IS NULL
+		OR compliment_list IS NULL
+		OR compliment_note IS NULL
+		OR compliment_plain IS NULL
+		OR compliment_cool IS NULL
+		OR compliment_funny IS NULL
+		OR compliment_writer IS NULL
+		OR compliment_photos IS NULL;
+		
+	
+	
+4. For each table and column listed below, display the smallest (minimum), largest (maximum), and average (mean) value for the following fields:
+
+	i. Table: Review, Column: Stars
+	
+		min: 1		max: 5		avg: 3.7082 
+		
+	
+	ii. Table: Business, Column: Stars
+	
+		min: 1.0    max: 5.0	avg: 3.6549 
+		
+	
+	iii. Table: Tip, Column: Likes
+	
+		min: 0		max: 2		avg: 0.0144 
+		
+	
+	iv. Table: Checkin, Column: Count
+	
+		min: 1		max: 53		avg: 1.9414 
+		
+	
+	v. Table: User, Column: Review_count
+	
+		min: 0		max: 2000	avg: 24.2995 
+		
+
+
+5. List the cities with the most reviews in descending order:
+
+	SQL code used to arrive at answer:
+
+	SELECT city, SUM(review_count) as "#Reviews" 
+	FROM business
+	GROUP BY city
+	ORDER BY SUM(review_count) DESC;
+	
+	
+	Copy and Paste the Result Below:
+
+	+-----------------+----------+
+	| city            | #Reviews |
+	+-----------------+----------+
+	| Las Vegas       |    82854 |
+	| Phoenix         |    34503 |
+	| Toronto         |    24113 |
+	| Scottsdale      |    20614 |
+	| Charlotte       |    12523 |
+	| Henderson       |    10871 |
+	| Tempe           |    10504 |
+	| Pittsburgh      |     9798 |
+	| Montréal        |     9448 |
+	| Chandler        |     8112 |
+	| Mesa            |     6875 |
+	| Gilbert         |     6380 |
+	| Cleveland       |     5593 |
+	| Madison         |     5265 |
+	| Glendale        |     4406 |
+	| Mississauga     |     3814 |
+	| Edinburgh       |     2792 |
+	| Peoria          |     2624 |
+	| North Las Vegas |     2438 |
+	| Markham         |     2352 |
+	| Champaign       |     2029 |
+	| Stuttgart       |     1849 |
+	| Surprise        |     1520 |
+	| Lakewood        |     1465 |
+	| Goodyear        |     1155 |
+	+-----------------+----------+
+	(Output limit exceeded, 25 of 362 total rows shown)
+	
+
+	
+6. Find the distribution of star ratings to the business in the following cities:
+
+i. Avon
+
+	SQL code used to arrive at answer:
+
+	SELECT stars, COUNT(stars) as "star_distribution" 
+	FROM business
+	GROUP BY city, stars
+	HAVING city="Avon";
+
+	Copy and Paste the Resulting Table Below (2 columns â€“ star rating and count):
+
+	+-------+-------------------+
+	| stars | star_distribution |
+	+-------+-------------------+
+	|   1.5 |                 1 |
+	|   2.5 |                 2 |
+	|   3.5 |                 3 |
+	|   4.0 |                 2 |
+	|   4.5 |                 1 |
+	|   5.0 |                 1 |
+	+-------+-------------------+
+
+
+ii. Beachwood
+
+	SQL code used to arrive at answer:
+
+	SELECT stars, COUNT(stars) as "star_distribution" 
+	FROM business
+	GROUP BY city, stars
+	HAVING city="Beachwood";
+
+	Copy and Paste the Resulting Table Below (2 columns â€“ star rating and count):
+			
+	+-------+-------------------+
+	| stars | star_distribution |
+	+-------+-------------------+
+	|   2.0 |                 1 |
+	|   2.5 |                 1 |
+	|   3.0 |                 2 |
+	|   3.5 |                 2 |
+	|   4.0 |                 1 |
+	|   4.5 |                 2 |
+	|   5.0 |                 5 |
+	+-------+-------------------+
+
+
+7. Find the top 3 users based on their total number of reviews:
+		
+	SQL code used to arrive at answer:
+
+	SELECT name, COUNT(review_count) total_reviews
+	FROM user
+	GROUP BY name
+	ORDER BY COUNT(review_count) DESC LIMIT 3;
+	
+		
+	Copy and Paste the Result Below:
+
+	+-------+---------------+
+	| name  | total_reviews |
+	+-------+---------------+
+	| John  |           102 |
+	| David |            90 |
+	| Chris |            74 |
+	+-------+---------------+
+
+
+8. Does posing more reviews correlate with more fans?
+
+	Please explain your findings and interpretation of the results:
+
+	Used the following query to check the trend: 
+
+	SELECT name, SUM(review_count) total_reviews, SUM(fans) fans
+	FROM user
+	GROUP BY name
+	ORDER BY SUM(review_count) DESC;
+
+	Based on the results of the above query, it can be observed that there is no correlation between the number of reviews posted and the number of fans for a business. 
+	This is because as the number of reviews decreases, there is no particular increasing or decreasing trend in the number of fans.
+	
+
+	
+9. Are there more reviews with the word "love" or with the word "hate" in them?
+
+	Answer: Reviews with word "love" are more in mumber.
+	
+	SQL code used to arrive at answer:
+
+	SELECT
+	(SELECT COUNT(*) FROM review WHERE text like "%love%") AS love_count,
+	(SELECT COUNT(*) FROM review WHERE text like "%hate%") AS hate_count;
+
+	Output:
+
+	+------------+------------+
+	| love_count | hate_count |
+	+------------+------------+
+	|       1780 |        232 |
+	+------------+------------+
+	
+	
+10. Find the top 10 users with the most fans:
+
+	SQL code used to arrive at answer:
+
+	SELECT name
+	FROM user
+	GROUP BY name
+	ORDER BY SUM(fans) desc, name limit 10;
+	
+	Copy and Paste the Result Below:
+
+	+-----------+
+	| name      |
+	+-----------+
+	| Amy       |
+	| Mimi      |
+	| Harald    |
+	| Gerald    |
+	| Lisa      |
+	| Nicole    |
+	| Christine |
+	| Mark      |
+	| Jen       |
+	| Linda     |
+	+-----------+
+
+
+Part 2: Inferences and Analysis
+
+1. Pick one city and category of your choice and group the businesses in that city or category by their overall star rating. Compare the businesses with 2-3 stars to the businesses with 4-5 stars and answer the following questions. Include your code.
+=> Since I'm free to choose a city and category by whatever way I can, I'm choosing a city with a large number of businesses. This will ensure that I have enough data to draw meaningful conclusions from. 
+Accordingly the city I happened to choose is "Phoenix" with as many as 1001 number of businesses. Used the following code to come with "Phoneix":
+
+SELECT city, COUNT(name) as "#businesses"
+FROM business b
+GROUP BY city
+ORDER BY COUNT(name) DESC;
+
+And to choose a category, I'm going ahead with the one having the largest number of businesses in the chosen city -- "Restaurants".
+Used the following query to come up with the category "Restaurants":
+
+SELECT c.category, COUNT(b.name)
+FROM business b 
+JOIN category c ON b.id = c.business_id
+WHERE b.city = "Phoenix"
+GROUP BY c.category
+ORDER BY COUNT(b.name) DESC;
+	
+i. Do the two groups you chose to analyze have a different distribution of hours?
+
+The analysis showed that only two businesses viz. "McDonald's" and "Gallagher's" fell into the 2-3 star rating category and two businesses which are "Charlie D's Catfish & Chicken" and "Bootleggers Modern American Smokehouse" fell into the 4-5 star rating category. 
+Although there was a stark difference in the distribution of hours between these businesses, there was no discernible pattern.
+
+ii. Do the two groups you chose to analyze have a different number of reviews?
+
++----------------------------------------+-------------+----------+
+| name                                   | star_rating | #reviews |
++----------------------------------------+-------------+----------+
+| Bootleggers Modern American Smokehouse | 4-5         |     3017 |
+| Charlie D's Catfish & Chicken          | 4-5         |       49 |
+| Gallagher's                            | 2-3         |      420 |
+| McDonald's                             | 2-3         |       56 |
++----------------------------------------+-------------+----------+
+
+=> So apparently, they do have different number of reviews.         
+         
+iii. Are you able to infer anything from the location data provided between these two groups? Explain.
+
+=> Nothing as such can be inferred from the location data.
+
+SQL code used for analysis:
+
+SELECT b.name, 
+        CASE 
+            WHEN b.stars between 2 AND 3 THEN "2-3"
+            WHEN b.stars between 4 AND 5 THEN "4-5"
+        END AS star_rating,
+        GROUP_CONCAT(h.hours),
+        b.review_count,
+        b.postal_code,
+        b.neighborhood,
+        b.longitude,
+        b.latitude
+FROM business b
+JOIN category c ON b.id = c.business_id
+JOIN hours h ON b.id = h.business_id
+WHERE 
+    b.city IS "Phoenix" 
+    AND c.category IS "Restaurants"
+    AND (star_rating IS "2-3" OR star_rating IS "4-5")
+GROUP BY b.name, star_rating
+ORDER BY star_rating DESC;
+
+Output:
+
++----------------------------------------+-------------+----------------------------------------------------------------------------------------------------------------------------------------------+--------------+-------------+--------------+-----------+----------+
+| name                                   | star_rating | GROUP_CONCAT(h.hours)                                                                                                                        | review_count | postal_code | neighborhood | longitude | latitude |
++----------------------------------------+-------------+----------------------------------------------------------------------------------------------------------------------------------------------+--------------+-------------+--------------+-----------+----------+
+| Bootleggers Modern American Smokehouse | 4-5         | Monday|11:00-22:00,Tuesday|11:00-22:00,Friday|11:00-22:00,Wednesday|11:00-22:00,Thursday|11:00-22:00,Sunday|11:00-22:00,Saturday|11:00-22:00 |          431 | 85028       |              |  -112.008 |  33.5818 |
+| Charlie D's Catfish & Chicken          | 4-5         | Monday|11:00-18:00,Tuesday|11:00-18:00,Friday|11:00-18:00,Wednesday|11:00-18:00,Thursday|11:00-18:00,Sunday|13:00-16:00,Saturday|11:00-18:00 |            7 | 85034       |              |  -112.057 |  33.4468 |
+| Gallagher's                            | 2-3         | Monday|11:00-0:00,Tuesday|11:00-0:00,Friday|11:00-2:00,Wednesday|11:00-0:00,Thursday|11:00-2:00,Sunday|9:00-0:00,Saturday|9:00-2:00          |           60 | 85024       |              |  -112.064 |  33.6536 |
+| McDonald's                             | 2-3         | Monday|5:00-23:00,Tuesday|5:00-23:00,Friday|5:00-0:00,Wednesday|5:00-23:00,Thursday|5:00-23:00,Sunday|5:00-23:00,Saturday|5:00-0:00          |            8 | 85004       |              |  -112.066 |  33.4297 |
++----------------------------------------+-------------+----------------------------------------------------------------------------------------------------------------------------------------------+--------------+-------------+--------------+-----------+----------+
+
+		
+2. Group business based on the ones that are open and the ones that are closed. What differences can you find between the ones that are still open and the ones that are closed? List at least two differences and the SQL code you used to arrive at your answer.
+		
+i. Difference 1: The average number of reviews per business of open businesses is way higher than that of closed businesses.
+         
+ii. Difference 2: The average star rating seems to be higher of the open businesses compartively.
+          
+SQL code used for analysis:
+
+SELECT 
+    b.is_open, 
+    COUNT(b.id) num_businesses,
+    ROUND(AVG(stars), 2) avg_star_rating, 
+    ROUND(AVG(review_count), 2) avg_review_count
+FROM business b 
+GROUP BY b.is_open
+ORDER BY AVG(review_count);
+
++---------+----------------+-----------------+------------------+
+| is_open | num_businesses | avg_star_rating | avg_review_count |
++---------+----------------+-----------------+------------------+
+|       0 |           1520 |            3.52 |             23.2 |
+|       1 |           8480 |            3.68 |            31.76 |
++---------+----------------+-----------------+------------------+
+
+	
+	
+3. For this last part of your analysis, you are going to choose the type of analysis you want to conduct on the Yelp dataset and are going to prepare the data for analysis.
+
+Ideas for analysis include: Parsing out keywords and business attributes for sentiment analysis, clustering businesses to find commonalities or anomalies between them, predicting the overall star rating for a business, predicting the number of fans a user will have, and so on. These are just a few examples to get you started, so feel free to be creative and come up with your own problem you want to solve. Provide answers, in-line, to all of the following:
+	
+i. Indicate the type of analysis you chose to do:
+
+=> I went with Sentiment Analysis of the users' reviews against the businesses along with the respective categories (for the businesses, the category information is available) grouped by the names of business, its city, and its state.
+         
+		 
+ii. Write 1-2 brief paragraphs on the type of data you will need for your analysis and why you chose that data:
+
+a. The aim of the dataset I prepared was to analyze the text of reviews and identify common themes or sentiments towards specific businesses or categories, based on user reviews.
+
+b. To ensure that even businesses without categorical data were included, I joined the "Business" table with the "Category" table using a left join. Then, I joined the resulting table with the "Review" table using an inner join. This allowed me to extract the necessary columns for sentiment analysis.
+
+c. I grouped businesses by their name, city, and state altogether to uniquely identify each business. Next, I concatenated all the reviews associated with a particular business into a single paragraph to facilitate sentiment analysis.                           
+
+d. Finally, using TF-IDF techniques, along with text cleaning, lemmatization or stemming, sentiment metrics can be calculated for each review.
+
+
+iii. Output of your finished dataset:
+
++-----------------+----------+--------------+-------+------------------+------------------+-----------------+----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| name            | category | city         | state | avg_stars_rating | avg_useful_votes | avg_funny_votes | avg_cool_votes | review_text                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
++-----------------+----------+--------------+-------+------------------+------------------+-----------------+----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| 4E Kennels      |     None | Las Vegas    | NV    |              5.0 |              2.0 |             0.0 |            0.0 | I can't think of enough positive words for 4E Kennels!  Jeanette and her family are such amazing people and raise each and every one of their pups with love!  We "stumbled" upon 4E Kennels and we didn't just gain a pup but a whole doodle family!                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+|                 |          |              |       |                  |                  |                 |                |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|                 |          |              |       |                  |                  |                 |                | If you are looking for a furry addition to your family this should be the only place you look.  You will not only gain a pup but a whole family of friends!                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| 5 & Diner       |     None | Chandler     | AZ    |              1.0 |              1.0 |             1.0 |            0.0 | ugh. had the mediterranean omelet. eggs were so overcooked they even looked rubbery, not to mention the taste. the artichokes were hard. the feta cheese was dry. flavors were odd. the only appetizing was the toast, and they don't make that in house.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| 808 Sushi       |     None | Las Vegas    | NV    |              4.0 |    1.33333333333 |             0.0 |  1.33333333333 | Every time I come here the food is perfect !!!!! One of my favorite sushi spots in vegas! They make it right every time always happy to come here,Very good AYCE sushi.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+|                 |          |              |       |                  |                  |                 |                | The owner owned a sushi franchise in Hawaii, so he understand the standards of good food.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|                 |          |              |       |                  |                  |                 |                |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|                 |          |              |       |                  |                  |                 |                | Highlights:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+|                 |          |              |       |                  |                  |                 |                | - Spicy tuna roll, the REAL version, with Japanese mayo chili pepper mix. If you never tried this real authentic version of spicy tuna (the fake looks bright red from schiracha sauce) then you won't know WHAT you should be craving!                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+|                 |          |              |       |                  |                  |                 |                | -Hamachi collar. Ask any chef, she/he knows the best part of a fish is the collar (except for toro). The fatty flavorful meat seared crispy on the outside but soft and wonderful on the inside, just like me!                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+|                 |          |              |       |                  |                  |                 |                | -Miso Cod, soft buttery with mild miso sauce. I like this much better than the traditional miso butterfish which has more shoyu in it. This version is much more delicate.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+|                 |          |              |       |                  |                  |                 |                | -Salmon collar, which has an intense amount of fat in the meat. Was pure inddulgence.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+|                 |          |              |       |                  |                  |                 |                | -The nigiri - uni, unagi, hamachi, and halibut were all of quality standards.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+|                 |          |              |       |                  |                  |                 |                |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|                 |          |              |       |                  |                  |                 |                | During the ending though I felt I was overloaded with msg, I think due to the natural fattiness and saltiness of the Hamachi collar, Miso, and salmon collar. Bad move eating all three in one sitting but had to try since it was my first time here. Next time I'll limit myself from indulging in all three.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|                 |          |              |       |                  |                  |                 |                |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|                 |          |              |       |                  |                  |                 |                | If they had baked clams with the crusty mayo sauce on top, it would be perfection!                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+|                 |          |              |       |                  |                  |                 |                |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|                 |          |              |       |                  |                  |                 |                | Went on a Wednesday, 2 large groups came in, luckily, when we were nearing the end of our dining experience. This place gets crowded, and for a good reason!,The all-you-can-eat sushi at this place is quite good.  They have a decent variety of rolls and the standard selection of sushi.  The fish seemed to be fresh.  The rolls are made a little smaller (thinner) than most sushi places, which is fine by me.  In an AYCE setting, that just means being able to enjoy more variety.  My group had the six different rolls.  We felt the Lahaina, Hawaiian Style, and Pele were all very good.  The appetizer selection is not quite as extensive as some other AYCE places, but they were all quite good.  I appreciated the three raw fish choices they had -- Ahi Poke, Seared Ahi Poke, and Seared Salmon Sashimi.  They were all prepared well.  Most places have more fried appetizers than anything, so this was a pleasant surprise.  A positive note is that the Ahi Poke is simply a bowl of fresh fish and is not layered with "filler" items, such as seaweed, cucumber, onions, etc.  Our server was efficient and friendly, although her knowledge of the menu items could definitely use some help.  Overall, I enjoyed the meal and would come back.  Oyshi Sushi, about a mile away, has a larger menu and the sushi and rolls are slightly better.  The only problem is that you will have to wait a while during peak hours and the last couple of times I went, the service was REALLY slow. |
+| 99 Ranch Market |     None | Las Vegas    | NV    |              3.0 |              2.0 |             2.0 |            2.5 | I often eat at the Sam Woo next door.  This Sam Woo has no liquor license so it's BYOB over there, so the waiters there actually suggest you go to 99 Ranch.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+|                 |          |              |       |                  |                  |                 |                |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|                 |          |              |       |                  |                  |                 |                | Outside of picking up a pack of Tsingtao to enhance my meal at Sam Woo, I'd never go back to this dump...                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|                 |          |              |       |                  |                  |                 |                |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|                 |          |              |       |                  |                  |                 |                | This 99 Ranch stinks like moldy durian!!  Then, it looks as bad as it smells.  It's funny, if you read the other reviews for this market, they all say the same...It stinks, it's dirty, it's small and most importantly, it's like NO 99 Ranch I've ever been to.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+|                 |          |              |       |                  |                  |                 |                |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|                 |          |              |       |                  |                  |                 |                | The reason is, it's NOT A REAL 99 RANCH!!  It's not OWNED or operated by TAWA, the company that owns the 99 Ranch Supermarkets in CA, WA, etc and T&T Supermarkets in Canada.  This Las Vegas market is a licensee, so it's not at all what you're used to...                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+|                 |          |              |       |                  |                  |                 |                |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|                 |          |              |       |                  |                  |                 |                | Bu Hau...,Many ethnic foods you're looking for....decent prices.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|                 |          |              |       |                  |                  |                 |                |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|                 |          |              |       |                  |                  |                 |                | Not the international marketplace for sure, but it does the job.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|                 |          |              |       |                  |                  |                 |                |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|                 |          |              |       |                  |                  |                 |                | I like going here to buy the ginger tea....so good when you have a sore throat.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|                 |          |              |       |                  |                  |                 |                |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|                 |          |              |       |                  |                  |                 |                | Stop by and check it out when you have a chance. Also, many good restaurants in the area.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| A Panda Buffet  |     None | South Euclid | OH    |              3.0 |              0.0 |             0.0 |            0.0 | Run of the mill buffet, but not spectacular. Good price through 3:30, then dinner prices. They have some fun offerings too. Crawdads & lots of sushi today.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+|                 |          |              |       |                  |                  |                 |                |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|                 |          |              |       |                  |                  |                 |                | It will fill a hankerin' for Chinese buffets, but won't set the world on fire.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
++-----------------+----------+--------------+-------+------------------+------------------+-----------------+----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+P.S.: I've pasted only 5 records of the resultant dataset.         
+         
+iv. Provide the SQL code you used to create your final dataset:
+
+SELECT 
+    b.name,
+    c.category,
+    b.city,
+    b.state,
+    AVG(r.stars) avg_stars_rating,
+    AVG(r.useful) avg_useful_votes,
+    AVG(r.funny) avg_funny_votes,
+    AVG(r.cool) avg_cool_votes,
+    GROUP_CONCAT(r.text) review_text
+FROM business b 
+LEFT JOIN category c ON b.id = c.business_id
+INNER JOIN review r ON b.id = r.business_id
+GROUP BY b.name, b.city, b.state
+ORDER BY b.name, b.city, b.state;
+
+
+	
+		
