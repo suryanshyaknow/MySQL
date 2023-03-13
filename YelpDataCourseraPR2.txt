@@ -202,21 +202,19 @@ ii. Beachwood
 		
 	SQL code used to arrive at answer:
 
-	SELECT name, COUNT(review_count) total_reviews
+	SELECT name, review_count total_reviews
 	FROM user
-	GROUP BY name
-	ORDER BY COUNT(review_count) DESC LIMIT 3;
-	
+	ORDER BY review_count DESC LIMIT 3;
 		
 	Copy and Paste the Result Below:
 
-	+-------+---------------+
-	| name  | total_reviews |
-	+-------+---------------+
-	| John  |           102 |
-	| David |            90 |
-	| Chris |            74 |
-	+-------+---------------+
+	+--------+---------------+
+	| name   | total_reviews |
+	+--------+---------------+
+	| Gerald |          2000 |
+	| Sara   |          1629 |
+	| Yuri   |          1339 |
+	+--------+---------------+
 
 
 8. Does posing more reviews correlate with more fans?
@@ -258,27 +256,27 @@ ii. Beachwood
 
 	SQL code used to arrive at answer:
 
-	SELECT name
+	SELECT name, fans
 	FROM user
-	GROUP BY name
-	ORDER BY SUM(fans) desc, name limit 10;
+	ORDER BY fans DESC
+	LIMIT 10;
 	
 	Copy and Paste the Result Below:
 
-	+-----------+
-	| name      |
-	+-----------+
-	| Amy       |
-	| Mimi      |
-	| Harald    |
-	| Gerald    |
-	| Lisa      |
-	| Nicole    |
-	| Christine |
-	| Mark      |
-	| Jen       |
-	| Linda     |
-	+-----------+
+	+-----------+------+
+	| name      | fans |
+	+-----------+------+
+	| Amy       |  503 |
+	| Mimi      |  497 |
+	| Harald    |  311 |
+	| Gerald    |  253 |
+	| Christine |  173 |
+	| Lisa      |  159 |
+	| Cat       |  133 |
+	| William   |  126 |
+	| Fran      |  124 |
+	| Lissa     |  120 |
+	+-----------+------+
 
 
 Part 2: Inferences and Analysis
@@ -468,7 +466,3 @@ LEFT JOIN category c ON b.id = c.business_id
 INNER JOIN review r ON b.id = r.business_id
 GROUP BY b.name, b.city, b.state
 ORDER BY b.name, b.city, b.state;
-
-
-	
-		
